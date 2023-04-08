@@ -1,0 +1,9 @@
+<div class="door-container">
+  <div *ngFor="let door of doors; let doorNumber = index"
+       (click)="selectDoor(doorNumber)"
+       [class.selected]="isSelected(doorNumber)"
+       [class.opened]="isOpened(doorNumber)"
+       class="door">
+    <p class="door-number">{{doorNumber}}.</p>
+  </div>
+</div>
