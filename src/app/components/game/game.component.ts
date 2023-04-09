@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {GameService} from "../../services/game.service";
+import {GameService} from "../../services/game/game.service";
+import {Door} from "../../shared/model/Door";
 import {GamePhase} from "../../shared/enum/GamePhase";
+import {ScoreboardService} from "../../services/scoreboard/scoreboard.service";
 
 @Component({
   selector: 'app-game',
@@ -8,42 +10,57 @@ import {GamePhase} from "../../shared/enum/GamePhase";
   styleUrls: ['./game.component.less']
 })
 export class GameComponent implements OnInit {
+  private gamePhase: GamePhase = GamePhase.DOOR_SELECTION;
 
   constructor(private gameService: GameService) {
   }
 
   ngOnInit(): void {
-    this.gameService.initPrize();
+    this.initGame();
   }
 
-  get doors(): Array<boolean> {
-    return this.gameService.getDoors();
-  }
+  public selectDoor(doorNumber: number) {
+    if (this.gameService.isDoorOpened(doorNumber)) {
+      return;
+    }
 
-  selectDoor(doorNumber: number) {
-    if (!this.isOpened(doorNumber)) {
-      this.handleDoorSelection(doorNumber);
+    switch (this.gamePhase) {
+      case GamePhase.DOOR_SELECTION:
+        this.handleDoorSelection(doorNumber);
+        break;
+      case GamePhase.DOOR_SWITCHING:
+        this.handleDoorSwitching(doorNumber);
+        break;
     }
   }
 
   private handleDoorSelection(doorNumber: number) {
-    switch (this.gameService.getGamePhase()) {
-      case GamePhase.DOOR_SELECTION:
-        this.gameService.setSelectedDoor(doorNumber);
-        this.gameService.openDoor();
-        this.gameService.setGamePhase(GamePhase.DOOR_SWITCHING);
-        break;
-      case GamePhase.DOOR_SWITCHING:
-        this.gameService.setSelectedDoor(doorNumber);
-        this.gameService.setGamePhase(GamePhase.GAME_ENDED);
-    }
+    this.gameService.selectDoor(doorNumber);
+    this.gameService.openRandomDoor();
+    this.gamePhase = GamePhase.DOOR_SWITCHING;
   }
 
-  isSelected(doorNumber: number): boolean {
-    return this.gameService.getSelectedDoor() === doorNumber;
+  private handleDoorSwitching(doorNumber: number) {
+    this.gameService.selectDoor(doorNumber);
+    this.gameService.openAllDoors();
+    this.gamePhase = GamePhase.GAME_ENDED;
+    this.gameService.evaluateGame();
   }
 
-  isOpened(doorNumber: number): boolean {
-    return this.gameService.getOpenedDoor() === doorNumber;
+  get doors(): Array<Door> {
+    return this.gameService.getDoors();
+  }
+
+  isSelectedDoor(doorNumber: number): boolean {
+    return this.gameService.isSelectedDoor(doorNumber);
+  }
+
+  initGame() {
+    this.gamePhase = GamePhase.DOOR_SELECTION;
+    this.gameService.initDoors();
+  }
+
+  get isGameEnded(): boolean {
+    return this.gamePhase === GamePhase.GAME_ENDED;
   }
 }

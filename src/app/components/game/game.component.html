@@ -1,9 +1,17 @@
-<div class="door-container">
-  <div *ngFor="let door of doors; let doorNumber = index"
-       (click)="selectDoor(doorNumber)"
-       [class.selected]="isSelected(doorNumber)"
-       [class.opened]="isOpened(doorNumber)"
-       class="door">
-    <p class="door-number">{{doorNumber}}.</p>
+<app-scoreboard ></app-scoreboard>
+<div class="game-containter">
+  <div class="door-container">
+    <div *ngFor="let door of doors"
+         (click)="selectDoor(door.doorNumber)"
+         [ngClass]="{'selected': isSelectedDoor(door.doorNumber),
+                   'no-prize': door.hasPrize === false && door.isOpened,
+                   'has-prize': door.hasPrize === true && door.isOpened}"
+         class="door">
+      <p class="door-number">{{door.doorNumber}}.</p>
+    </div>
+  </div>
+
+  <div *ngIf="isGameEnded">
+    <button (click)="initGame()">Play Again?</button>
   </div>
 </div>

@@ -1,22 +1,28 @@
-.door-container {
-  display: flex;
-
-  .door {
-    height: 100px;
-    width: 50px;
-    background-color: brown;
-    margin: 10px;
+.game-containter {
+  .door-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
-  }
 
-  .selected {
-    background-color: green;
-  }
+    .door {
+      height: 100px;
+      width: 50px;
+      background-color: saddlebrown;
+      margin: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  .opened {
-    background-color: black;
+    .selected {
+      border: 2px solid green;
+    }
+
+    .no-prize {
+      background-color: black;
+    }
+
+    .has-prize {
+      background-color: yellow;
+    }
   }
 }
 
