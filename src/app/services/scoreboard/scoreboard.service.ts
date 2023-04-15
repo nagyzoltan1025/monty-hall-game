@@ -22,7 +22,7 @@ export class ScoreboardService {
 
   public getWinPercent(): number {
     let total = this.getTotal();
-    return total === 0 ? 100 : (this.scoreboard.wins / total) * 100;
+    return total === 0 ? 0 : (this.scoreboard.wins / total) * 100;
   }
 
   public addWin() {

@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {GameService} from "../../services/game/game.service";
 import {Door} from "../../shared/model/Door";
 import {GamePhase} from "../../shared/enum/GamePhase";
-import {ScoreboardService} from "../../services/scoreboard/scoreboard.service";
 
 @Component({
   selector: 'app-game',
