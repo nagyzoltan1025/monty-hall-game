@@ -6,7 +6,7 @@
          [ngClass]="{'selected': isSelectedDoor(door.doorNumber),
                    'no-prize': door.hasPrize === false && door.isOpened,
                    'has-prize': door.hasPrize === true && door.isOpened}"
-         class="door">
+         class="door" #doorRef>
       <p class="door-number">{{door.doorNumber}}.</p>
     </div>
   </div>

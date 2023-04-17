@@ -3,6 +3,7 @@ import { AppComponent } from './app.component';
 import {GameComponent} from "./components/game/game.component";
 import {GameService} from "./services/game/game.service";
 import {ScoreboardComponent} from "./components/scoreboard/scoreboard.component";
+import {AiPlayerComponent} from "./components/ai-player/ai-player.component";
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -10,7 +11,8 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent,
         GameComponent,
-        ScoreboardComponent
+        ScoreboardComponent,
+        AiPlayerComponent
       ],
       providers: [
         GameService

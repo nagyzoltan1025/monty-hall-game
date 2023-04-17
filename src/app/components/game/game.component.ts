@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {GameService} from "../../services/game/game.service";
 import {Door} from "../../shared/model/Door";
 import {GamePhase} from "../../shared/enum/GamePhase";
@@ -9,7 +9,8 @@ import {GamePhase} from "../../shared/enum/GamePhase";
   styleUrls: ['./game.component.less']
 })
 export class GameComponent implements OnInit {
-  private gamePhase: GamePhase = GamePhase.DOOR_SELECTION;
+  gamePhase: GamePhase = GamePhase.DOOR_SELECTION;
+  @ViewChildren('door') doorElements!: QueryList<ElementRef>;
 
   constructor(private gameService: GameService) {
   }
@@ -42,12 +43,8 @@ export class GameComponent implements OnInit {
   private handleDoorSwitching(doorNumber: number) {
     this.gameService.selectDoor(doorNumber);
     this.gameService.openAllDoors();
-    this.gamePhase = GamePhase.GAME_ENDED;
     this.gameService.evaluateGame();
-  }
-
-  get doors(): Array<Door> {
-    return this.gameService.getDoors();
+    this.gamePhase = GamePhase.GAME_ENDED;
   }
 
   isSelectedDoor(doorNumber: number): boolean {
@@ -61,5 +58,9 @@ export class GameComponent implements OnInit {
 
   get isGameEnded(): boolean {
     return this.gamePhase === GamePhase.GAME_ENDED;
+  }
+
+  get doors(): Array<Door> {
+    return this.gameService.getDoors();
   }
 }
