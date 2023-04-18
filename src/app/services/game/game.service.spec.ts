@@ -71,8 +71,6 @@ describe('GameService', () => {
 
       gameService.selectDoor(0);
 
-      gameService.openRandomDoor();
-
       expect(gameService.getDoors()[1].isOpened).toBe(true);
     });
 
@@ -90,8 +88,6 @@ describe('GameService', () => {
       let gameService = new GameService(doors, new ScoreboardService());
 
       gameService.selectDoor(1);
-
-      gameService.openRandomDoor();
 
       expect(gameService.getDoors()[2].isOpened).toBe(true);
     });

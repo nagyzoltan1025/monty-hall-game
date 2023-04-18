@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {GameComponent} from "../game/game.component";
 import {GamePhase} from "../../shared/enum/GamePhase";
+import {GameService} from "../../services/game/game.service";
 
 @Component({
   selector: 'app-ai-player',
@@ -9,6 +10,9 @@ import {GamePhase} from "../../shared/enum/GamePhase";
 })
 export class AiPlayerComponent implements AfterViewInit {
   @ViewChild('game') gameComponent!: GameComponent;
+
+  constructor(private gameService: GameService) {
+  }
 
   private readonly SIMULATION_SPEED = 1000;
 
@@ -24,6 +28,7 @@ export class AiPlayerComponent implements AfterViewInit {
   }
 
   private selectDoorNumber(): number {
+    let selectableDoors = this.gameService.getSelectableDoors();
     return 0;
   }
 }
