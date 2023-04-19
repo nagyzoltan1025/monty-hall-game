@@ -22,13 +22,13 @@ export class AiPlayerComponent implements AfterViewInit {
         this.gameComponent.initGame();
       }
 
-      let doorNumber = this.selectDoorNumber();
+      const doorNumber = this.selectDoorNumber();
       this.gameComponent.selectDoor(doorNumber);
     }, this.SIMULATION_SPEED)
   }
 
   private selectDoorNumber(): number {
-    let selectableDoors = this.gameService.getSelectableDoors();
+    const selectableDoors = this.gameService.getSelectableDoors();
     return 0;
   }
 }

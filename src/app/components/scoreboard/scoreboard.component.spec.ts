@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {ScoreboardComponent} from './scoreboard.component';
-import {GameService} from "../../services/game/game.service";
 import {ScoreboardService} from "../../services/scoreboard/scoreboard.service";
 
 describe('ScoreboardComponent', () => {

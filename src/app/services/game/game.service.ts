@@ -65,9 +65,9 @@ export class GameService {
   }
 
   private openRandomDoor(): void {
-    let openableDoors = this.getSelectableDoors()
-    let openableDoorNumber = Math.floor(Math.random() * openableDoors.length);
-    let doorToOpen = openableDoors[openableDoorNumber];
+    const openableDoors = this.getSelectableDoors()
+    const openableDoorNumber = Math.floor(Math.random() * openableDoors.length);
+    const doorToOpen = openableDoors[openableDoorNumber];
     this.doors[doorToOpen.doorNumber].isOpened = true;
   }
 
@@ -76,7 +76,7 @@ export class GameService {
   }
 
   public evaluateGame(): void {
-    let isPlayerWon = this.selectedDoorNumber === this.winningDoorNumber;
+    const isPlayerWon = this.selectedDoorNumber === this.winningDoorNumber;
     if (isPlayerWon) {
       this.scoreboardService.addWin()
     } else {
@@ -115,6 +115,5 @@ export class GameService {
         break;
     }
   }
-
 }
 

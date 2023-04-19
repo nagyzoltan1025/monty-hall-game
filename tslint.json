@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-prettier"
+  ],
+  "rules": {
+    "prettier": true,
+    "no-console": false // You can add or override rules here
+  },
+  "plugins": [
+    "tslint-plugin-prettier"
+  ]
+}
