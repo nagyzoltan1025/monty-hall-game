@@ -18,12 +18,12 @@ export class AiPlayerComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     setInterval(() => {
-      if (this.gameComponent.gamePhase === GamePhase.GAME_ENDED) {
-        this.gameComponent.initGame();
+      if (this.gameService.getGamePhase() === GamePhase.GAME_ENDED) {
+        this.gameService.initGame();
       }
 
       const doorNumber = this.selectDoorNumber();
-      this.gameComponent.selectDoor(doorNumber);
+      this.gameService.selectDoor(doorNumber);
     }, this.SIMULATION_SPEED)
   }
 

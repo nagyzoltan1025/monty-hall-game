@@ -23,7 +23,7 @@ export class GameService {
     this.gamePhase = GamePhase.DOOR_SELECTION;
   }
 
-  public initDoors(): void {
+  public initGame(): void {
     this.doors = [];
     this.selectedDoorNumber = -1;
     this.generateDoors();

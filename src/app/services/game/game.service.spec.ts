@@ -16,7 +16,7 @@ describe('GameService', () => {
 
     TestBed.configureTestingModule({});
     service = TestBed.inject(GameService);
-    service.initDoors();
+    service.initGame();
   });
 
   describe('door generation', () => {

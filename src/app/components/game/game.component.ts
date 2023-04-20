@@ -9,7 +9,6 @@ import {GamePhase} from "../../shared/enum/GamePhase";
   styleUrls: ['./game.component.less']
 })
 export class GameComponent implements OnInit {
-  gamePhase: GamePhase = GamePhase.DOOR_SELECTION;
   @ViewChildren('door') doorElements!: QueryList<ElementRef>;
 
   constructor(private gameService: GameService) {
@@ -20,10 +19,10 @@ export class GameComponent implements OnInit {
   }
 
   initGame() {
-    this.gameService.initDoors();
+    this.gameService.initGame();
   }
 
-  public selectDoor(doorNumber: number) {
+  selectDoor(doorNumber: number) {
     this.gameService.selectDoor(doorNumber);
   }
 
