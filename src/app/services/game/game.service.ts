@@ -8,7 +8,7 @@ import {GamePhase} from "../../shared/enum/GamePhase";
 })
 export class GameService {
 
-  private readonly NUMBER_OF_DOORS = 3;
+  public readonly NUMBER_OF_DOORS = 3;
 
   private doors: Array<Door>;
   private selectedDoorNumber: number;
