@@ -18,13 +18,13 @@ export class QLearningService {
   }
 
   public getBestStrategy(): string {
-    let bestStrategyReward = -1;
+    let bestStrategyReward = -Infinity;
     let bestStrategy = "";
 
-    for(const [strategy, reward] of this.qTable.entries()) {
-      if(bestStrategyReward < reward) {
+    for(const [strategy, qValue] of this.qTable.entries()) {
+      if(bestStrategyReward < qValue) {
         bestStrategy = strategy;
-        bestStrategyReward = reward;
+        bestStrategyReward = qValue;
       }
     }
 
@@ -32,18 +32,39 @@ export class QLearningService {
   }
 
   public updateQTable(action: string): void {
-    if (this.qTable.has(action)) {
-      let reward = this.getReward(action);
-      // let qValue = (1 - this.learningRate) * this.qTable.get(action) + this.learningRate*(reward+this.discountFactor*)
+    if (!this.qTable.has(action)) {
+      throw new Error('Invalid action: ' + action);
+    } else {
+      let qValue = (1 - this.learningRate) * this.getCurrentQValue(action) +
+        this.learningRate*(this.getReward()+this.discountFactor*this.getLargestQValue());
+      this.qTable.set(action, qValue);
     }
   }
 
-  private getReward(action: string) {
-
-    return 1;
+  private getCurrentQValue(action: string): number {
+    let reward = this.qTable.get(action);
+    if (reward !== undefined) {
+      return reward;
+    } else {
+      throw new Error('Unknown action: ' + action);
+    }
   }
 
-  private maxQValue() {
-    // return this.qTable.
+  private getReward() {
+    if (this.gameService.isPlayerWon()) {
+      return 1;
+    } else {
+      return -1;
+    }
+  }
+
+  private getLargestQValue() {
+    let largestQValue = -1;
+    for(const qValue of this.qTable.values()) {
+      if (largestQValue < qValue) {
+        largestQValue = qValue;
+      }
+    }
+    return largestQValue;
   }
 }

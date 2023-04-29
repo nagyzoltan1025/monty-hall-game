@@ -44,7 +44,7 @@ export class GameService {
     return this.doors;
   }
 
-  public getSelectableDoors(): Array<Door> {
+  private getSelectableDoors(): Array<Door> {
     return this.doors.filter(door =>
       !door.hasPrize &&
       !door.isOpened &&
@@ -76,12 +76,15 @@ export class GameService {
   }
 
   public evaluateGame(): void {
-    const isPlayerWon = this.selectedDoorNumber === this.winningDoorNumber;
-    if (isPlayerWon) {
+    if (this.isPlayerWon()) {
       this.scoreboardService.addWin()
     } else {
       this.scoreboardService.addLoss();
     }
+  }
+
+  public isPlayerWon(): boolean {
+    return this.selectedDoorNumber === this.winningDoorNumber;
   }
 
   public getGamePhase(): string {
@@ -113,6 +116,8 @@ export class GameService {
       case GamePhase.DOOR_SWITCHING:
         this.handleDoorSwitching(doorNumber);
         break;
+      default:
+        new Error('Invalid game phase');
     }
   }
 }

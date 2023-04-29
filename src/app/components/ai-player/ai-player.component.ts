@@ -14,10 +14,14 @@ import {Door} from "../../shared/model/Door";
 export class AiPlayerComponent implements AfterViewInit {
   @ViewChild('game') gameComponent!: GameComponent;
 
+  switches = 0;
+  holds = 0;
+
   constructor(private gameService: GameService, private qLearningService: QLearningService) {
   }
 
-  private readonly SIMULATION_SPEED = 1000;
+  private readonly SIMULATION_SPEED = 1;
+  private selectedStrategy = "";
 
   ngAfterViewInit(): void {
     setInterval(() => {
@@ -29,6 +33,7 @@ export class AiPlayerComponent implements AfterViewInit {
           this.gameService.selectDoor(this.selectDoorNumber());
           break;
         case GamePhase.GAME_ENDED:
+          this.qLearningService.updateQTable(this.selectedStrategy)
           this.gameService.initGame();
           break;
         default:
@@ -42,22 +47,35 @@ export class AiPlayerComponent implements AfterViewInit {
   }
 
   private selectDoorNumber(): number {
-    const selectableDoors = this.gameService.getSelectableDoors();
+    const selectableDoors = this.getDoorsSelectableByPlayer();
     const strategy = this.qLearningService.getBestStrategy();
 
     switch (strategy) {
       case QTableActions.SWITCH:
+        this.selectedStrategy = QTableActions.SWITCH;
         let otherDoor = this.findOtherDoor(selectableDoors);
+        this.switches++;
         return otherDoor.doorNumber;
       case QTableActions.HOLD:
+        this.selectedStrategy = QTableActions.HOLD;
+        this.holds++;
         return this.gameService.getSelectedDoor().doorNumber;
       default:
         throw new Error('unknown action');
     }
   }
 
+  private getDoorsSelectableByPlayer(): Array<Door> {
+    let selectableDoors = this.gameService.getDoors().filter(door => !door.isOpened);
+    if (selectableDoors) {
+      return selectableDoors
+    } else {
+      throw new Error('No doors are eligible for selection');
+    }
+  }
+
   private findOtherDoor(selectableDoors: Array<Door>): Door {
-    let otherDoor = selectableDoors.find(door => door === this.gameService.getSelectedDoor());
+    let otherDoor = selectableDoors.find(door => door.doorNumber === this.gameService.getSelectedDoor().doorNumber);
     if (!otherDoor) {
       throw new Error("Other door is undefined");
     } else {
