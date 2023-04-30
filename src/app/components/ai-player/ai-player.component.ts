@@ -1,9 +1,9 @@
 import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import {GameComponent} from "../game/game.component";
-import {GamePhase} from "../../shared/enum/GamePhase";
+import {GamePhase} from "../../shared/enum/game-phase";
 import {GameService} from "../../services/game/game.service";
 import {QLearningService} from "../../services/q-learning/q-learning.service";
-import {QTableActions} from "../../shared/enum/QTableActions";
+import {QtableActions} from "../../shared/enum/qtable-actions";
 import {Door} from "../../shared/model/Door";
 
 @Component({
@@ -20,7 +20,7 @@ export class AiPlayerComponent implements AfterViewInit {
   constructor(private gameService: GameService, private qLearningService: QLearningService) {
   }
 
-  private readonly SIMULATION_SPEED = 1;
+  private readonly SIMULATION_SPEED = 1000;
   private selectedStrategy = "";
 
   ngAfterViewInit(): void {
@@ -51,13 +51,13 @@ export class AiPlayerComponent implements AfterViewInit {
     const strategy = this.qLearningService.getBestStrategy();
 
     switch (strategy) {
-      case QTableActions.SWITCH:
-        this.selectedStrategy = QTableActions.SWITCH;
+      case QtableActions.SWITCH:
+        this.selectedStrategy = QtableActions.SWITCH;
         let otherDoor = this.findOtherDoor(selectableDoors);
         this.switches++;
         return otherDoor.doorNumber;
-      case QTableActions.HOLD:
-        this.selectedStrategy = QTableActions.HOLD;
+      case QtableActions.HOLD:
+        this.selectedStrategy = QtableActions.HOLD;
         this.holds++;
         return this.gameService.getSelectedDoor().doorNumber;
       default:

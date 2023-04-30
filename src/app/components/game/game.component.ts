@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {GameService} from "../../services/game/game.service";
 import {Door} from "../../shared/model/Door";
-import {GamePhase} from "../../shared/enum/GamePhase";
+import {GamePhase} from "../../shared/enum/game-phase";
 
 @Component({
   selector: 'app-game',

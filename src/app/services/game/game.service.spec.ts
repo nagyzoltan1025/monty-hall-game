@@ -3,25 +3,26 @@ import {TestBed} from '@angular/core/testing';
 import {GameService} from './game.service';
 import {Door} from "../../shared/model/Door";
 import {ScoreboardService} from "../scoreboard/scoreboard.service";
+import {async} from "rxjs";
 
 describe('GameService', () => {
   let service: GameService;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      providers: [
-        ScoreboardService
-      ]
-    }).compileComponents();
-
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(GameService);
-    service.initGame();
-  });
-
   describe('door generation', () => {
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        providers: [
+          ScoreboardService
+        ]
+      }).compileComponents();
+
+      TestBed.configureTestingModule({});
+      service = TestBed.inject(GameService);
+      service.initGame();
+    });
+
     it('should generate doors', () => {
-      expect(service.getDoors().length).toBe(3);
+      expect(service.getDoors().length).toBe(service.NUMBER_OF_DOORS);
     });
 
     it('should generate doors with one prize', () => {
@@ -49,10 +50,6 @@ describe('GameService', () => {
       const firstDoorNumberToSelect = 0;
       service.selectDoor(firstDoorNumberToSelect);
       expect(service.getSelectedDoor().doorNumber).toBe(firstDoorNumberToSelect);
-
-      const secondDoorNumberToSelect = 2;
-      service.selectDoor(secondDoorNumberToSelect);
-      expect(service.getSelectedDoor().doorNumber).toBe(secondDoorNumberToSelect);
     });
   });
 

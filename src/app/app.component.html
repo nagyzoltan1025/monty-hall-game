@@ -1,2 +1,5 @@
-<!--<app-game></app-game>-->
-<app-ai-player></app-ai-player>
+<div>
+  <app-menu *ngIf="view === viewTypes.MENU_VIEW" (viewSelected)="onViewSelected($event)"></app-menu>
+  <app-game *ngIf="view === viewTypes.GAMEPLAY_VIEW"></app-game>
+  <app-ai-player *ngIf="view === viewTypes.SIMULATION_VIEW"></app-ai-player>
+</div>

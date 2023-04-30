@@ -1,4 +1,4 @@
-export enum QTableActions {
+export enum QtableActions {
   HOLD = "hold",
   SWITCH = "switch"
 }

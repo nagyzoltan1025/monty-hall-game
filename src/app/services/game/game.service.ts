@@ -1,7 +1,7 @@
 import {Injectable, Optional} from '@angular/core';
 import {Door} from "../../shared/model/Door";
 import {ScoreboardService} from "../scoreboard/scoreboard.service";
-import {GamePhase} from "../../shared/enum/GamePhase";
+import {GamePhase} from "../../shared/enum/game-phase";
 
 @Injectable({
   providedIn: 'root'

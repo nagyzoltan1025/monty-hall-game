@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {GameService} from "../game/game.service";
-import {QTableActions} from "../../shared/enum/QTableActions";
+import {QtableActions} from "../../shared/enum/qtable-actions";
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +8,8 @@ import {QTableActions} from "../../shared/enum/QTableActions";
 export class QLearningService {
 
   private qTable = new Map<string, number>([
-    [QTableActions.HOLD, 0],
-    [QTableActions.SWITCH, 0]
+    [QtableActions.HOLD, 0],
+    [QtableActions.SWITCH, 0]
   ]);
   private learningRate = 0.5;
   private discountFactor = 0.5;
