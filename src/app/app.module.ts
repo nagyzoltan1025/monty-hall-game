@@ -6,6 +6,7 @@ import { GameComponent } from './components/game/game.component';
 import { ScoreboardComponent } from './components/scoreboard/scoreboard.component';
 import { AiPlayerComponent } from './components/ai-player/ai-player.component';
 import { MenuComponent } from './components/menu/menu.component';
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { MenuComponent } from './components/menu/menu.component';
     MenuComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

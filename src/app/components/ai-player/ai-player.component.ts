@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {GameComponent} from "../game/game.component";
 import {GamePhase} from "../../shared/enum/game-phase";
 import {GameService} from "../../services/game/game.service";
@@ -11,35 +11,70 @@ import {Door} from "../../shared/model/Door";
   templateUrl: './ai-player.component.html',
   styleUrls: ['./ai-player.component.less']
 })
-export class AiPlayerComponent implements AfterViewInit {
-  @ViewChild('game') gameComponent!: GameComponent;
+export class AiPlayerComponent {
 
+  @ViewChild('game') gameComponent!: GameComponent;
   switches = 0;
   holds = 0;
-
-  constructor(private gameService: GameService, private qLearningService: QLearningService) {
-  }
-
   private readonly SIMULATION_SPEED = 1000;
   private selectedStrategy = "";
+  private intervalId: NodeJS.Timer | undefined;
 
-  ngAfterViewInit(): void {
-    setInterval(() => {
-      switch (this.gameService.getGamePhase()) {
-        case GamePhase.DOOR_SELECTION:
-          this.gameService.selectDoor(this.getRandomDoorNumber());
-          break;
-        case GamePhase.DOOR_SWITCHING:
-          this.gameService.selectDoor(this.selectDoorNumber());
-          break;
-        case GamePhase.GAME_ENDED:
-          this.qLearningService.updateQTable(this.selectedStrategy)
-          this.gameService.initGame();
-          break;
-        default:
-          throw new Error("Invalid game phase");
-      }
-    }, this.SIMULATION_SPEED)
+  constructor(private gameService: GameService,
+              private qLearningService: QLearningService) {
+  }
+
+  toggleSimulation() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+      this.intervalId = undefined;
+    } else {
+      this.intervalId = setInterval(() => this.gameRunner(), this.SIMULATION_SPEED);
+    }
+  }
+
+  get toggleButtonName(): string {
+    if (this.isGameRunning()) {
+      return "Stop";
+    } else {
+      return "Start";
+    }
+  }
+
+  get learningRate(): number {
+    return this.qLearningService.learningRate;
+  }
+
+  set learningRate(value: number) {
+    this.qLearningService.learningRate = value;
+  }
+
+  get discountFactor(): number {
+    return this.qLearningService.discountFactor;
+  }
+  set discountFactor(value: number) {
+    this.qLearningService.discountFactor = value;
+  }
+
+  private gameRunner() {
+    switch (this.gameService.getGamePhase()) {
+      case GamePhase.DOOR_SELECTION:
+        this.gameService.selectDoor(this.getRandomDoorNumber());
+        break;
+      case GamePhase.DOOR_SWITCHING:
+        this.gameService.selectDoor(this.selectDoorNumber());
+        break;
+      case GamePhase.GAME_ENDED:
+        this.qLearningService.updateQTable(this.selectedStrategy);
+        this.gameService.initGame();
+        break;
+      default:
+        throw new Error("Invalid game phase");
+    }
+  }
+
+  private isGameRunning(): boolean {
+    return !!this.intervalId;
   }
 
   private getRandomDoorNumber() {

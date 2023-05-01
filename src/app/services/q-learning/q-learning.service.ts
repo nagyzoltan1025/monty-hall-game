@@ -11,8 +11,8 @@ export class QLearningService {
     [QtableActions.HOLD, 0],
     [QtableActions.SWITCH, 0]
   ]);
-  private learningRate = 0.5;
-  private discountFactor = 0.5;
+  learningRate = 0.5;
+  discountFactor = 0.5;
 
   constructor(private gameService: GameService) {
   }
@@ -21,8 +21,8 @@ export class QLearningService {
     let bestStrategyReward = -Infinity;
     let bestStrategy = "";
 
-    for(const [strategy, qValue] of this.qTable.entries()) {
-      if(bestStrategyReward < qValue) {
+    for (const [strategy, qValue] of this.qTable.entries()) {
+      if (bestStrategyReward < qValue) {
         bestStrategy = strategy;
         bestStrategyReward = qValue;
       }
@@ -36,7 +36,7 @@ export class QLearningService {
       throw new Error('Invalid action: ' + action);
     } else {
       let qValue = (1 - this.learningRate) * this.getCurrentQValue(action) +
-        this.learningRate*(this.getReward()+this.discountFactor*this.getLargestQValue());
+        this.learningRate * (this.getReward() + this.discountFactor * this.getLargestQValue());
       this.qTable.set(action, qValue);
     }
   }
@@ -60,7 +60,7 @@ export class QLearningService {
 
   private getLargestQValue() {
     let largestQValue = -1;
-    for(const qValue of this.qTable.values()) {
+    for (const qValue of this.qTable.values()) {
       if (largestQValue < qValue) {
         largestQValue = qValue;
       }
