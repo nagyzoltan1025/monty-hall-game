@@ -3,7 +3,6 @@ import {TestBed} from '@angular/core/testing';
 import {GameService} from './game.service';
 import {Door} from "../../shared/model/Door";
 import {ScoreboardService} from "../scoreboard/scoreboard.service";
-import {async} from "rxjs";
 
 describe('GameService', () => {
   let service: GameService;

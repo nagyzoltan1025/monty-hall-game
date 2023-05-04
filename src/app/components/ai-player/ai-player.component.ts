@@ -16,7 +16,7 @@ export class AiPlayerComponent {
   @ViewChild('game') gameComponent!: GameComponent;
   switches = 0;
   holds = 0;
-  private readonly SIMULATION_SPEED = 1000;
+  simulationSpeed = 1000;
   private selectedStrategy = "";
   private intervalId: NodeJS.Timer | undefined;
 
@@ -29,7 +29,7 @@ export class AiPlayerComponent {
       clearInterval(this.intervalId);
       this.intervalId = undefined;
     } else {
-      this.intervalId = setInterval(() => this.gameRunner(), this.SIMULATION_SPEED);
+      this.intervalId = setInterval(() => this.gameRunner(), this.simulationSpeed);
     }
   }
 
@@ -52,6 +52,7 @@ export class AiPlayerComponent {
   get discountFactor(): number {
     return this.qLearningService.discountFactor;
   }
+
   set discountFactor(value: number) {
     this.qLearningService.discountFactor = value;
   }
@@ -87,21 +88,29 @@ export class AiPlayerComponent {
 
     switch (strategy) {
       case QtableActions.SWITCH:
-        this.selectedStrategy = QtableActions.SWITCH;
-        let otherDoor = this.findOtherDoor(selectableDoors);
-        this.switches++;
-        return otherDoor.doorNumber;
+        return this.handleSwitching(selectableDoors);
       case QtableActions.HOLD:
-        this.selectedStrategy = QtableActions.HOLD;
-        this.holds++;
-        return this.gameService.getSelectedDoor().doorNumber;
+        return this.handleHolding();
       default:
         throw new Error('unknown action');
     }
   }
 
+  private handleHolding() {
+    this.selectedStrategy = QtableActions.HOLD;
+    this.holds++;
+    return this.gameService.getSelectedDoor().doorNumber;
+  }
+
+  private handleSwitching(selectableDoors: Array<Door>): number {
+    this.selectedStrategy = QtableActions.SWITCH;
+    this.switches++;
+    const otherDoor = this.findOtherDoor(selectableDoors);
+    return otherDoor.doorNumber;
+  }
+
   private getDoorsSelectableByPlayer(): Array<Door> {
-    let selectableDoors = this.gameService.getDoors().filter(door => !door.isOpened);
+    const selectableDoors = this.gameService.getDoors().filter(door => !door.isOpened);
     if (selectableDoors) {
       return selectableDoors
     } else {
@@ -110,7 +119,7 @@ export class AiPlayerComponent {
   }
 
   private findOtherDoor(selectableDoors: Array<Door>): Door {
-    let otherDoor = selectableDoors.find(door => door.doorNumber === this.gameService.getSelectedDoor().doorNumber);
+    const otherDoor = selectableDoors.find(door => door.doorNumber === this.gameService.getSelectedDoor().doorNumber);
     if (!otherDoor) {
       throw new Error("Other door is undefined");
     } else {

@@ -35,14 +35,14 @@ export class QLearningService {
     if (!this.qTable.has(action)) {
       throw new Error('Invalid action: ' + action);
     } else {
-      let qValue = (1 - this.learningRate) * this.getCurrentQValue(action) +
+      const qValue = (1 - this.learningRate) * this.getCurrentQValue(action) +
         this.learningRate * (this.getReward() + this.discountFactor * this.getLargestQValue());
       this.qTable.set(action, qValue);
     }
   }
 
   private getCurrentQValue(action: string): number {
-    let reward = this.qTable.get(action);
+    const reward = this.qTable.get(action);
     if (reward !== undefined) {
       return reward;
     } else {
