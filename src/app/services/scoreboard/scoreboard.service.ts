@@ -32,4 +32,8 @@ export class ScoreboardService {
   public addLoss() {
     this.scoreboard.losses++;
   }
+
+  public clearScoreBoard() {
+    this.scoreboard = new Scoreboard();
+  }
 }

@@ -5,6 +5,7 @@ import {GameService} from "../../services/game/game.service";
 import {QLearningService} from "../../services/q-learning/q-learning.service";
 import {QtableActions} from "../../shared/enum/qtable-actions";
 import {Door} from "../../shared/model/Door";
+import {ScoreboardService} from "../../services/scoreboard/scoreboard.service";
 
 @Component({
   selector: 'app-ai-player',
@@ -21,15 +22,15 @@ export class AiPlayerComponent {
   private intervalId: NodeJS.Timer | undefined;
 
   constructor(private gameService: GameService,
+              private scoreboardService: ScoreboardService,
               private qLearningService: QLearningService) {
   }
 
   toggleSimulation() {
     if (this.intervalId) {
-      clearInterval(this.intervalId);
-      this.intervalId = undefined;
+      this.stopSimulation();
     } else {
-      this.intervalId = setInterval(() => this.gameRunner(), this.simulationSpeed);
+      this.startSimulation();
     }
   }
 
@@ -125,5 +126,18 @@ export class AiPlayerComponent {
     } else {
       return otherDoor;
     }
+  }
+
+  private startSimulation() {
+    this.switches = 0;
+    this.holds = 0;
+    this.scoreboardService.clearScoreBoard();
+    this.qLearningService.clearQTable();
+    this.intervalId = setInterval(() => this.gameRunner(), this.simulationSpeed);
+  }
+
+  private stopSimulation() {
+    clearInterval(this.intervalId);
+    this.intervalId = undefined;
   }
 }

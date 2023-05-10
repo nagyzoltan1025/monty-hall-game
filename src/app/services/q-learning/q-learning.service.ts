@@ -7,10 +7,7 @@ import {QtableActions} from "../../shared/enum/qtable-actions";
 })
 export class QLearningService {
 
-  private qTable = new Map<string, number>([
-    [QtableActions.HOLD, 0],
-    [QtableActions.SWITCH, 0]
-  ]);
+  private qTable = this.initQTable();
   learningRate = 0.5;
   discountFactor = 0.5;
 
@@ -39,6 +36,17 @@ export class QLearningService {
         this.learningRate * (this.getReward() + this.discountFactor * this.getLargestQValue());
       this.qTable.set(action, qValue);
     }
+  }
+
+  public clearQTable(): void {
+    this.qTable = this.initQTable();
+  }
+
+  private initQTable(): Map<string, number> {
+    return new Map<string, number>([
+      [QtableActions.HOLD, 0],
+      [QtableActions.SWITCH, 0]
+    ])
   }
 
   private getCurrentQValue(action: string): number {

@@ -30,26 +30,8 @@ export class GameService {
     this.gamePhase = GamePhase.DOOR_SELECTION;
   }
 
-  private generateDoors(): void {
-    for (let i = 0; i < this.NUMBER_OF_DOORS; i++) {
-      this.doors.push(new Door(i));
-    }
-
-    this.winningDoorNumber = Math.floor(Math.random() * this.NUMBER_OF_DOORS);
-
-    this.doors[this.winningDoorNumber].hasPrize = true;
-  }
-
   public getDoors(): Array<Door> {
     return this.doors;
-  }
-
-  private getSelectableDoors(): Array<Door> {
-    return this.doors.filter(door =>
-      !door.hasPrize &&
-      !door.isOpened &&
-      !this.isSelectedDoor(door.doorNumber)
-    );
   }
 
   public getSelectedDoor(): Door {
@@ -62,13 +44,6 @@ export class GameService {
 
   public isDoorOpened(doorNumber: number): boolean {
     return this.doors[doorNumber].isOpened;
-  }
-
-  private openRandomDoor(): void {
-    const openableDoors = this.getSelectableDoors()
-    const openableDoorNumber = Math.floor(Math.random() * openableDoors.length);
-    const doorToOpen = openableDoors[openableDoorNumber];
-    this.doors[doorToOpen.doorNumber].isOpened = true;
   }
 
   public openAllDoors(): void {
@@ -119,6 +94,32 @@ export class GameService {
       default:
         new Error('Invalid game phase');
     }
+  }
+
+  private openRandomDoor(): void {
+    const openableDoors = this.getSelectableDoors()
+    const openableDoorNumber = Math.floor(Math.random() * openableDoors.length);
+    const doorToOpen = openableDoors[openableDoorNumber];
+    this.doors[doorToOpen.doorNumber].isOpened = true;
+  }
+
+
+  private getSelectableDoors(): Array<Door> {
+    return this.doors.filter(door =>
+      !door.hasPrize &&
+      !door.isOpened &&
+      !this.isSelectedDoor(door.doorNumber)
+    );
+  }
+
+  private generateDoors(): void {
+    for (let i = 0; i < this.NUMBER_OF_DOORS; i++) {
+      this.doors.push(new Door(i));
+    }
+
+    this.winningDoorNumber = Math.floor(Math.random() * this.NUMBER_OF_DOORS);
+
+    this.doors[this.winningDoorNumber].hasPrize = true;
   }
 }
 
