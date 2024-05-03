@@ -19,7 +19,7 @@ export class AiPlayerComponent {
   holds = 0;
   simulationSpeed = 1000;
   private selectedStrategy = "";
-  private intervalId: NodeJS.Timer | undefined;
+  private intervalId: string | number | undefined | NodeJS.Timeout;
 
   constructor(private gameService: GameService,
               private scoreboardService: ScoreboardService,
@@ -103,14 +103,14 @@ export class AiPlayerComponent {
     return this.gameService.getSelectedDoor().doorNumber;
   }
 
-  private handleSwitching(selectableDoors: Array<Door>): number {
+  private handleSwitching(selectableDoors: Door[]): number {
     this.selectedStrategy = QtableActions.SWITCH;
     this.switches++;
     const otherDoor = this.findOtherDoor(selectableDoors);
     return otherDoor.doorNumber;
   }
 
-  private getDoorsSelectableByPlayer(): Array<Door> {
+  private getDoorsSelectableByPlayer(): Door[] {
     const selectableDoors = this.gameService.getDoors().filter(door => !door.isOpened);
     if (selectableDoors) {
       return selectableDoors
@@ -119,7 +119,7 @@ export class AiPlayerComponent {
     }
   }
 
-  private findOtherDoor(selectableDoors: Array<Door>): Door {
+  private findOtherDoor(selectableDoors: Door[]): Door {
     const otherDoor = selectableDoors.find(door => door.doorNumber === this.gameService.getSelectedDoor().doorNumber);
     if (!otherDoor) {
       throw new Error("Other door is undefined");
