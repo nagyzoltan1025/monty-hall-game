@@ -1,10 +1,13 @@
-# MontyHallGame
+# Monty Hall Paradox Game
 
-This is a small, fun project for playing the Monty Hall game.
-Many people, myself included, find the Monty Hall Paradox very counterintuitive. This paradox suggests that a player has a 66% chance of winning if they choose to switch doors after the host reveals a goat behind one of the other two doors, rather than sticking with their initial choice. To put this theory to the test and provide a practical demonstration, I created this app. It allows users to experiment with both strategies—switching or holding—over multiple rounds, thereby offering insights into whether the theoretical 66% win rate for switching holds true in practice.
+This small project is a fun, interactive application designed to test and demonstrate the Monty Hall Paradox, which is often counterintuitive. 
+In the Monty Hall game, a player is presented with three doors: behind one door is a prize, and behind the others, goats. After the player selects a door, the host, who knows what's behind each door, opens one of the other two doors to reveal a goat. Here, the player faces a choice: stick with the original door or switch to the other unopened door. According to the paradox, switching doors gives a player a 66% chance of winning.
+
+To explore this theory, I developed an app using Angular that allows users to play through multiple rounds, either switching or staying with their initial choice.
+It's also possible to run a simulation, where the game itself tries to figure out which strategy is better: to switch or to stay.
 
 **Game Rules:**
-* There are 3 doors, one of which contains a prize, and the other two contain nothing.
+* There are 3 doors, one containing a prize, and the other two containing nothing.
 * At the start of the game, the player chooses a door.
 * The game then opens another door that does not have the prize.
 * The player is offered the chance to select another door.
