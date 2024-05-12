@@ -42,50 +42,50 @@ describe('GameService', () => {
         expect(door.isOpened).toBe(false);
       }
     });
-  });
 
-  describe('door selection', () => {
-    it('should select the door with the given door number', () => {
-      const firstDoorNumberToSelect = 0;
-      service.selectDoor(firstDoorNumberToSelect);
-      expect(service.getSelectedDoor().doorNumber).toBe(firstDoorNumberToSelect);
-    });
-  });
-
-  describe('door opening', () => {
-    it('should open an unselected no prize door ' +
-      'when we select a door that contains a prize', () => {
-      spyOn(Math, 'random').and.returnValue(0);
-
-      const doors = [
-        new Door(0, true, false),
-        new Door(1, false, false),
-        new Door(2, false, false)
-      ];
-
-      const gameService = new GameService(doors, new ScoreboardService());
-
-      gameService.selectDoor(0);
-
-      expect(gameService.getDoors()[1].isOpened).toBe(true);
+    describe('door selection', () => {
+      it('should select the door with the given door number', () => {
+        const firstDoorNumberToSelect = 0;
+        service.selectDoor(firstDoorNumberToSelect);
+        expect(service.getSelectedDoor().doorNumber).toBe(firstDoorNumberToSelect);
+      });
     });
 
+    describe('door opening', () => {
+      it('should open an unselected no prize door ' +
+        'when we select a door that contains a prize', () => {
+        spyOn(Math, 'random').and.returnValue(0);
 
-    it('should open an unselected no prize door ' +
-      'when a door is selected without a prize', () => {
-      spyOn(Math, 'random').and.returnValue(0);
+        const doors = [
+          new Door(0, true, false),
+          new Door(1, false, false),
+          new Door(2, false, false)
+        ];
 
-      const doors = [
-        new Door(0, true, false),
-        new Door(1, false, false),
-        new Door(2, false, false)
-      ];
+        const gameService = new GameService(doors, new ScoreboardService());
 
-      const gameService = new GameService(doors, new ScoreboardService());
+        gameService.selectDoor(0);
 
-      gameService.selectDoor(1);
+        expect(gameService.getDoors()[1].isOpened).toBe(true);
+      });
 
-      expect(gameService.getDoors()[2].isOpened).toBe(true);
+
+      it('should open an unselected no prize door ' +
+        'when a door is selected without a prize', () => {
+        spyOn(Math, 'random').and.returnValue(0);
+
+        const doors = [
+          new Door(0, true, false),
+          new Door(1, false, false),
+          new Door(2, false, false)
+        ];
+
+        const gameService = new GameService(doors, new ScoreboardService());
+
+        gameService.selectDoor(1);
+
+        expect(gameService.getDoors()[2].isOpened).toBe(true);
+      });
     });
   });
 });

@@ -10,12 +10,12 @@ export class GameService {
 
   public readonly NUMBER_OF_DOORS = 3;
 
-  private doors: Array<Door>;
+  private doors: Door[];
   private selectedDoorNumber: number;
   private winningDoorNumber: number;
   private gamePhase: string;
 
-  constructor(@Optional() doors: Array<Door>,
+  constructor(@Optional() doors: Door[],
               private scoreboardService: ScoreboardService) {
     this.doors = doors ? doors: [];
     this.selectedDoorNumber = -1;
@@ -30,7 +30,7 @@ export class GameService {
     this.gamePhase = GamePhase.DOOR_SELECTION;
   }
 
-  public getDoors(): Array<Door> {
+  public getDoors(): Door[] {
     return this.doors;
   }
 
@@ -92,7 +92,7 @@ export class GameService {
         this.handleDoorSwitching(doorNumber);
         break;
       default:
-        new Error('Invalid game phase');
+        throw new Error('Invalid game phase');
     }
   }
 
@@ -104,7 +104,7 @@ export class GameService {
   }
 
 
-  private getSelectableDoors(): Array<Door> {
+  private getSelectableDoors(): Door[] {
     return this.doors.filter(door =>
       !door.hasPrize &&
       !door.isOpened &&
