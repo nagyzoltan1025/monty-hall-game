@@ -1,7 +1,9 @@
-import {Injectable, Optional} from '@angular/core';
+import {Inject, Injectable, InjectionToken, Optional} from '@angular/core';
 import {Door} from "../../shared/model/Door";
 import {ScoreboardService} from "../scoreboard/scoreboard.service";
 import {GamePhase} from "../../shared/enum/game-phase";
+
+export const DOORS_TOKEN = new InjectionToken<Door[]>('DoorsToken');
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +17,7 @@ export class GameService {
   private winningDoorNumber: number;
   private gamePhase: string;
 
-  constructor(@Optional() doors: Door[],
+  constructor(@Optional() @Inject(DOORS_TOKEN) doors: Door[],
               private scoreboardService: ScoreboardService) {
     this.doors = doors ? doors: [];
     this.selectedDoorNumber = -1;
